@@ -1,0 +1,48 @@
+﻿
+Name                   Directory                                               
+----                   ---------                                               
+App.css                D:\MATHVOX FRONTEND\my-project-main\src                 
+App.jsx                D:\MATHVOX FRONTEND\my-project-main\src                 
+index.css              D:\MATHVOX FRONTEND\my-project-main\src                 
+main.jsx               D:\MATHVOX FRONTEND\my-project-main\src                 
+translations.js        D:\MATHVOX FRONTEND\my-project-main\src                 
+react.svg              D:\MATHVOX FRONTEND\my-project-main\src\assets          
+AdminHeader.jsx        D:\MATHVOX FRONTEND\my-project-main\src\components      
+AdminSidebar.jsx       D:\MATHVOX FRONTEND\my-project-main\src\components      
+AdminStatCard.jsx      D:\MATHVOX FRONTEND\my-project-main\src\components      
+AuthCard.jsx           D:\MATHVOX FRONTEND\my-project-main\src\components      
+ChatSidebar.jsx        D:\MATHVOX FRONTEND\my-project-main\src\components      
+GoogleSignIn.jsx       D:\MATHVOX FRONTEND\my-project-main\src\components      
+icons.jsx              D:\MATHVOX FRONTEND\my-project-main\src\components      
+LoginModal.jsx         D:\MATHVOX FRONTEND\my-project-main\src\components      
+Navbar.jsx             D:\MATHVOX FRONTEND\my-project-main\src\components      
+PageBackHeader.jsx     D:\MATHVOX FRONTEND\my-project-main\src\components      
+ProfileNameModal.jsx   D:\MATHVOX FRONTEND\my-project-main\src\components      
+ProtectedRoute.jsx     D:\MATHVOX FRONTEND\my-project-main\src\components      
+sidebar.jsx            D:\MATHVOX FRONTEND\my-project-main\src\components      
+SidebarToggle.jsx      D:\MATHVOX FRONTEND\my-project-main\src\components      
+AdminRoute.jsx         D:\MATHVOX FRONTEND\my-project-main\src\components\admin
+AdminAnalytics.jsx     D:\MATHVOX FRONTEND\my-project-main\src\pages           
+AdminConversations.jsx D:\MATHVOX FRONTEND\my-project-main\src\pages           
+AdminDashboard.jsx     D:\MATHVOX FRONTEND\my-project-main\src\pages           
+AdminSettings.jsx      D:\MATHVOX FRONTEND\my-project-main\src\pages           
+AdminUsers.jsx         D:\MATHVOX FRONTEND\my-project-main\src\pages           
+chat.jsx               D:\MATHVOX FRONTEND\my-project-main\src\pages           
+Dashboard.jsx          D:\MATHVOX FRONTEND\my-project-main\src\pages           
+ForgotPassword.jsx     D:\MATHVOX FRONTEND\my-project-main\src\pages           
+Home.jsx               D:\MATHVOX FRONTEND\my-project-main\src\pages           
+Login.jsx              D:\MATHVOX FRONTEND\my-project-main\src\pages           
+Progress.jsx           D:\MATHVOX FRONTEND\my-project-main\src\pages           
+ResetPassword.jsx      D:\MATHVOX FRONTEND\my-project-main\src\pages           
+Signup.jsx             D:\MATHVOX FRONTEND\my-project-main\src\pages           
+Skills.jsx             D:\MATHVOX FRONTEND\my-project-main\src\pages           
+VerifyEmail.jsx        D:\MATHVOX FRONTEND\my-project-main\src\pages           
+adminApi.js            D:\MATHVOX FRONTEND\my-project-main\src\services        
+api.js                 D:\MATHVOX FRONTEND\my-project-main\src\services        
+chatStorage.js         D:\MATHVOX FRONTEND\my-project-main\src\services        
+ocr.js                 D:\MATHVOX FRONTEND\my-project-main\src\services        
+problemParse.js        D:\MATHVOX FRONTEND\my-project-main\src\services        
+replyLanguage.js       D:\MATHVOX FRONTEND\my-project-main\src\services        
+historyFormat.js       D:\MATHVOX FRONTEND\my-project-main\src\utils           
+
+

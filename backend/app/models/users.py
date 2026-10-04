@@ -10,6 +10,9 @@ class User(Base):
     name = Column(String)
     username = Column(String, unique=True, nullable=True, index=True)
     email = Column(String, unique=True, index=True)
+    class_grade = Column(String, nullable=True)
+    age = Column(Integer, nullable=True)
+    current_level = Column(String, nullable=True)
 
     password = Column(String, nullable=True)
     password_hash = Column(String, nullable=True)

@@ -13,7 +13,6 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import Skills from "./pages/Skills";
-import Progress from "./pages/Progress";
 import Assessment from "./pages/Assessment";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
@@ -106,28 +105,10 @@ const App = () => {
             />
 
             <Route
-              path="/progress"
-              element={
-                <ProtectedRoute>
-                  <Progress />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
               path="/profile"
               element={
                 <ProtectedRoute>
                   <Profile />
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Progress />
                 </ProtectedRoute>
               }
             />

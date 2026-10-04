@@ -16,7 +16,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     ...(userId
       ? [
           { name: "History", path: "/history", icon: "fa-clock-rotate-left" },
-          { name: "Progress", path: "/progress", icon: "fa-chart-line" },
           { name: "Skills", path: "/skills", icon: "fa-brain" },
           { name: "Profile", path: "/profile", icon: "fa-user" },
         ]

@@ -79,7 +79,6 @@ from app.routes.ocr import router as ocr_router
 from app.routes.chat import router as chat_router
 from app.routes.threads import router as threads_router
 from app.routes.tutor import router as tutor_router
-from app.routes.progress_route import router as progress_router
 
 # ✅ Register Routers
 app.include_router(solve_router)
@@ -91,4 +90,3 @@ app.include_router(ocr_router)
 app.include_router(chat_router)
 app.include_router(threads_router)
 app.include_router(tutor_router)
-app.include_router(progress_router)

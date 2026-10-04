@@ -475,17 +475,6 @@ export default function ChatSidebar({
             Skills
           </Link>
           <Link
-            to="/progress"
-            onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-              location.pathname === "/progress"
-                ? "bg-gray-200 dark:bg-slate-800 text-gray-900 dark:text-white font-medium"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-200/80 dark:hover:bg-slate-800"
-            }`}
-          >
-            Progress
-          </Link>
-          <Link
             to="/history"
             onClick={() => setIsOpen(false)}
             className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors ${
@@ -542,14 +531,14 @@ export default function ChatSidebar({
           </button>
         </div>
 
-        <ProfileNameModal
-          open={profileEditOpen}
-          currentName={profile.name}
-          currentUsername={profile.username}
-          email={profile.email}
-          onClose={() => setProfileEditOpen(false)}
-          onSaved={() => setProfile(getUserProfile())}
-        />
+        {profileEditOpen && (
+          <ProfileNameModal
+            currentName={profile.name}
+            currentUsername={profile.username}
+            onClose={() => setProfileEditOpen(false)}
+            onSaved={() => setProfile(getUserProfile())}
+          />
+        )}
       </aside>
     </>
   );

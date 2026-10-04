@@ -1,6 +1,7 @@
 from enum import Enum
+from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 # 🔹 Signup / auth
@@ -10,6 +11,8 @@ class SignupRequest(BaseModel):
     email: str
     password: str
     confirm_password: str
+    class_grade: Literal["Class 1", "Class 2", "Class 3"]
+    age: int = Field(ge=7, le=10)
 
 
 class GoogleAuthRequest(BaseModel):

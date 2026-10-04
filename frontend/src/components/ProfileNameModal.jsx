@@ -13,10 +13,8 @@ function initials(name) {
 }
 
 export default function ProfileNameModal({
-  open,
   currentName,
   currentUsername,
-  email,
   onClose,
   onSaved,
 }) {
@@ -27,15 +25,8 @@ export default function ProfileNameModal({
   const nameRef = useRef(null);
 
   useEffect(() => {
-    if (open) {
-      setName(currentName || "");
-      setUsername(currentUsername || "");
-      setError("");
-      setTimeout(() => nameRef.current?.focus(), 50);
-    }
-  }, [open, currentName, currentUsername]);
-
-  if (!open) return null;
+    nameRef.current?.focus();
+  }, []);
 
   const handleSave = async () => {
     setError("");

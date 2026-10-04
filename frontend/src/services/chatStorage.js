@@ -416,6 +416,15 @@ export function onLogout() {
   clearUserProfile();
 }
 
+export function clearDeletedUserData(uid) {
+  if (uid) {
+    localStorage.removeItem(threadsKey(uid));
+    localStorage.removeItem(activeThreadKey(uid));
+    localStorage.removeItem(legacyChatKey(uid));
+  }
+  onLogout();
+}
+
 export function usesServerChats() {
   return isLoggedIn();
 }

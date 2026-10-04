@@ -61,6 +61,23 @@ export const updateUserProfile = async ({ name, username }) => {
   return data;
 };
 
+export const deleteUserAccount = async () => {
+  const user_id = localStorage.getItem("user_id");
+  if (!user_id) throw new Error("Not logged in.");
+
+  const res = await fetch(
+    `${BASE_URL}/auth/profile?user_id=${encodeURIComponent(user_id)}`,
+    { method: "DELETE" }
+  );
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(
+      typeof data.detail === "string" ? data.detail : "Could not delete account"
+    );
+  }
+  return data;
+};
+
 /** @deprecated use updateUserProfile */
 export const updateUserName = async (name) => updateUserProfile({ name });
 
@@ -268,26 +285,6 @@ export const askTutor = async (threadId, message, replyStyle = "ur_roman") => {
   return data;
 };
 
-export const getProgressApi = async () => {
-  const user_id = requireUserId();
-  const res = await fetch(`${BASE_URL}/progress?user_id=${user_id}`);
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || "Could not load progress");
-  }
-  return res.json();
-};
-
-export const getProgressActivity = async () => {
-  const user_id = requireUserId();
-  const res = await fetch(`${BASE_URL}/progress/activity?user_id=${user_id}`);
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || "Could not load progress");
-  }
-  return res.json();
-};
-
 // --- Skill assessment ---
 export const getAssessmentTopics = async () => {
   const res = await fetch(`${BASE_URL}/assessment/topics`);
@@ -471,6 +468,8 @@ export const signupUser = async ({
   email,
   password,
   confirmPassword,
+  classGrade,
+  age,
 }) => {
   const res = await fetch(`${BASE_URL}/signup`, {
     method: "POST",
@@ -481,6 +480,8 @@ export const signupUser = async ({
       email,
       password,
       confirm_password: confirmPassword,
+      class_grade: classGrade,
+      age,
     }),
   });
   const data = await res.json().catch(() => ({}));

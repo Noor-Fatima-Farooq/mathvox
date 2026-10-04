@@ -20,6 +20,8 @@ export default function Signup() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [classGrade, setClassGrade] = useState("");
+  const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,6 +35,16 @@ export default function Signup() {
     const user = username.trim().toLowerCase();
     if (!user || !email.trim()) {
       setError("Enter username and email.");
+      return;
+    }
+    if (
+      !classGrade ||
+      !age ||
+      !Number.isInteger(Number(age)) ||
+      Number(age) < 7 ||
+      Number(age) > 10
+    ) {
+      setError("Select your class and enter an age from 7 to 10.");
       return;
     }
     if (!/^[a-zA-Z0-9_]{3,30}$/.test(user)) {
@@ -55,6 +67,8 @@ export default function Signup() {
         username: user,
         name: displayName.trim() || undefined,
         email: email.trim(),
+        classGrade,
+        age: Number(age),
         password,
         confirmPassword,
       });
@@ -96,6 +110,35 @@ export default function Signup() {
         disabled={loading}
         placeholder="Same as username if left blank"
         autoComplete="name"
+      />
+      <label className="block mb-4">
+        <span className="text-sm text-gray-600 dark:text-gray-400 mb-1 block">
+          Class
+        </span>
+        <select
+          className="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-slate-800 outline-none focus:ring-2 focus:ring-indigo-400 text-gray-900 dark:text-white"
+          value={classGrade}
+          onChange={(e) => setClassGrade(e.target.value)}
+          disabled={loading}
+          required
+        >
+          <option value="">Select your class</option>
+          <option value="Class 1">Class 1</option>
+          <option value="Class 2">Class 2</option>
+          <option value="Class 3">Class 3</option>
+        </select>
+      </label>
+      <AuthInput
+        label="Age"
+        type="number"
+        value={age}
+        onChange={(e) => setAge(e.target.value)}
+        disabled={loading}
+        placeholder="7–10"
+        min="7"
+        max="10"
+        step="1"
+        required
       />
       <AuthInput
         label="Email"

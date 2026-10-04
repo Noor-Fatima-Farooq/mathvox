@@ -448,21 +448,6 @@ export default function Assessment() {
               >
                 Back to Skills
               </button>
-              <button
-                type="button"
-                onClick={() =>
-                  navigate("/progress", {
-                    state: {
-                      skill: assessment.skill,
-                      level: assessment.level,
-                      subtopic: assessment.subtopic,
-                    },
-                  })
-                }
-                className="rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 dark:border-slate-700 dark:text-slate-200"
-              >
-                View Progress
-              </button>
             </div>
           </section>
         ) : (

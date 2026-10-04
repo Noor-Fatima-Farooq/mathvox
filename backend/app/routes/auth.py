@@ -18,6 +18,13 @@ from app.models.assessment_session import (
     AssessmentItem,
 )
 from app.models.settings import AdminSettings
+from app.models.user_skill import (
+    CurriculumCycle,
+    SubtopicQuiz,
+    UserSkill,
+    UserSkillLevel,
+    UserSubtopicProgress,
+)
 
 from app.schemas import (
     ForgotPasswordRequest,
@@ -161,6 +168,9 @@ def _profile_payload(
         "name": name,
         "username": username,
         "email": user.email or "",
+        "class_grade": user.class_grade,
+        "age": user.age,
+        "current_level": user.current_level,
     }
 
 
@@ -979,6 +989,65 @@ def update_profile(
     return _profile_payload(user)
 
 
+@router.delete("/auth/profile")
+def delete_profile(
+    user_id: int = Query(...),
+    db: Session = Depends(get_db),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found.",
+        )
+
+    thread_ids = [
+        row[0]
+        for row in db.query(ChatThread.id)
+        .filter(ChatThread.user_id == user_id)
+        .all()
+    ]
+    if thread_ids:
+        db.query(ChatMessage).filter(
+            ChatMessage.thread_id.in_(thread_ids)
+        ).delete(synchronize_session=False)
+    db.query(ChatThread).filter(
+        ChatThread.user_id == user_id
+    ).delete(synchronize_session=False)
+
+    session_ids = [
+        row[0]
+        for row in db.query(AssessmentSession.id)
+        .filter(AssessmentSession.user_id == user_id)
+        .all()
+    ]
+    if session_ids:
+        db.query(AssessmentItem).filter(
+            AssessmentItem.session_id.in_(session_ids)
+        ).delete(synchronize_session=False)
+    db.query(AssessmentSession).filter(
+        AssessmentSession.user_id == user_id
+    ).delete(synchronize_session=False)
+
+    for model in (
+        Progress,
+        CurriculumCycle,
+        UserSkill,
+        UserSubtopicProgress,
+        SubtopicQuiz,
+        UserSkillLevel,
+    ):
+        db.query(model).filter(
+            model.user_id == user_id
+        ).delete(synchronize_session=False)
+
+    db.delete(user)
+    db.commit()
+
+    return {"message": "Account deleted successfully."}
+
+
 # ============================================================
 # AUTH CONFIG
 # ============================================================
@@ -1131,7 +1200,15 @@ def signup(
 
         name=display,
 
+        username=username,
+
         email=email,
+
+        class_grade=user.class_grade,
+
+        age=user.age,
+
+        current_level=user.class_grade,
 
         password_hash=hash_password(
             user.password
@@ -1162,6 +1239,8 @@ def signup(
         ),
 
         "user_id": new_user.id,
+
+        "profile": _profile_payload(new_user),
 
         "email_sent": False,
 

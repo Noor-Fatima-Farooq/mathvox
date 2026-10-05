@@ -3,11 +3,11 @@
 export const REPLY_STYLE_KEY = "mathvox_reply_style";
 export const REPLY_STYLE_EVENT = "mathvox:reply-style-changed";
 
-const ENGLISH_EXPLICIT =
-  /\b(in english|english please|answer in english|explain in english|speak english|use english|reply in english|write in english|only english)\b/i;
-
-const URDU_EXPLICIT =
-  /\b(roman urdu|urdu mein|roman urdu mein|urdu me|hindi urdu)\b/i;
+const URDU_SCRIPT = /[\u0600-\u06ff]/;
+const ROMAN_URDU_WORDS =
+  /\b(kya|kia|kyun|kaise|kaisay|kese|kesay|hai|hain|ho|mujhe|mujhy|mjhe|mjhy|samjhao|smjhao|samjha|smjha|batao|btayo|kitna|kitne|kitni|mera|meri|mere|hamara|hamari|mein|main|mai|ka|ki|ke|ko|se|karo|kro|karna|karein|iska|iski|isko|yeh|ye|jawab|jawaab|hal|nikalo|nikalna)\b/i;
+const ENGLISH_WORDS =
+  /\b(what|why|how|explain|solve|calculate|find|show|steps|please|give|tell|answer|result|work|can|could|would|the|this|that|is|are|me|you|your)\b/i;
 
 export function normalizeReplyStyle(style) {
   return style === "en" ? "en" : "ur_roman";
@@ -27,20 +27,26 @@ export function setReplyStylePreference(style) {
   return next;
 }
 
-/** Per-message style: explicit phrase overrides button preference */
-export function resolveReplyStyleForMessage(message) {
-  const pref = getReplyStylePreference();
-  const msg = message || "";
+/** The language toggle is authoritative; individual wording never changes it. */
+export function resolveReplyStyleForMessage() {
+  return getReplyStylePreference();
+}
 
-  if (ENGLISH_EXPLICIT.test(msg)) {
-    setReplyStylePreference("en");
-    return "en";
+export function getLanguageSwitchMessage(message, style) {
+  const text = (message || "").trim();
+  let messageLanguage = null;
+  if (URDU_SCRIPT.test(text) || ROMAN_URDU_WORDS.test(text)) {
+    messageLanguage = "ur_roman";
+  } else if (ENGLISH_WORDS.test(text)) {
+    messageLanguage = "en";
   }
-  if (URDU_EXPLICIT.test(msg)) {
-    setReplyStylePreference("ur_roman");
-    return "ur_roman";
+
+  if (!messageLanguage || messageLanguage === normalizeReplyStyle(style)) {
+    return null;
   }
-  return pref;
+  return style === "ur_roman"
+    ? "Aap ka sawal English mein lag raha hai. Barah-e-karam upar EN tab select karke apna sawal dobara bhejein."
+    : "It looks like your question is in Urdu. Please select the Urdu tab above, then send your question again.";
 }
 
 export function applyPreferenceUpdate(preferenceUpdate) {

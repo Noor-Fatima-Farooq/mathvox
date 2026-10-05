@@ -55,6 +55,8 @@ Rules:
 - intent "explain": they want steps or understanding (explain, how, why, show work, break it down)
 - intent "discuss": follow-up about math already in the thread (compare problems, is my answer right, what about x)
 - intent "off_topic": not math (weather, jokes unrelated to math, coding homework with no math)
+- Recognize Roman Urdu intent too: "samjhao", "smjhao", "kaise", and "kyun" usually mean explain; "kya hai", "kitna", and "jawab" usually ask for an answer.
+- If the student asks to explain in either English or Roman Urdu, choose "explain"; if they ask only for the result, choose "solve".
 - expression: use * for multiply, ** for powers, 2*x+1=5 for algebra; digits only for worksheets like 1+4
 - use_thread_problem: true for vague references when history has a problem
 - If message has BOTH explain and a full equation, intent "explain" and fill expression

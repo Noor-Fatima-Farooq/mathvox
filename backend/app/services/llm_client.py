@@ -7,12 +7,14 @@ PROVIDER = os.getenv("LLM_PROVIDER", "groq").lower().strip()
 def _build_prompt(question: str, answer: str, reply_style: str) -> str:
     if reply_style == "ur_roman":
         language_instruction = (
-            "Write the ENTIRE explanation in simple Roman Urdu. "
-            "Use short, natural student-friendly sentences."
+            "Write every explanatory word in simple Roman Urdu (Urdu in Latin letters). "
+            "Do not use Urdu script or English sentences. Explain like a patient teacher "
+            "helping a young student understand each calculation."
         )
     else:
         language_instruction = (
-            "Write the explanation in clear, simple English."
+            "Write the entire explanation in clear, simple English. "
+            "Do not use Urdu script, Roman Urdu, or Urdu sentences."
         )
 
     return f"""You are MathVox, a math tutor.
@@ -55,7 +57,7 @@ Instead write calculation steps such as:
 "3 ÷ (1/3) = 9."
 "Ab expression 9 - 9 + 1 ban jati hai."
 "9 - 9 + 1 = 1."
-"Final answer = 1."
+"Aakhri jawab = 1."
 
 {language_instruction}
 
@@ -152,8 +154,7 @@ def _normalize_steps(data: dict) -> dict:
 
         cleaned_steps.append(step)
 
-    # Keep explanation short.
-    cleaned_steps = cleaned_steps[:4]
+    cleaned_steps = cleaned_steps[:12]
 
     return {"steps": cleaned_steps}
 
@@ -340,17 +341,19 @@ def chat_with_history(
     style = normalize_style(reply_style)
     lang = language_instruction(style)
 
-    system = f"""You are MathVox, a friendly and concise math tutor.
+    system = f"""You are MathVox, a friendly math tutor.
 
 {lang}
 
 You understand Roman Urdu, Urdu, and English.
+Always follow the selected reply language above, even when the student writes in a different language.
 
 Use conversation history when the student refers to:
 "it", "that", "woh", "pehle wala", "last one", or "problem 2".
 
 Rules:
-- Keep replies short.
+- Give a direct answer when the student asks only for the result.
+- When asked to explain, teach patiently with clear steps and do not skip important calculations.
 - Do not reveal internal reasoning.
 - Never output <think> or </think>.
 - Do not discuss hidden analysis.

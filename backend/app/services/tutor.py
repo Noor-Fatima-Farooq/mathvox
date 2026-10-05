@@ -12,6 +12,8 @@ from app.services.math_extract import split_questions
 from app.services.reply_language import (
     explain_footer,
     format_solve_reply,
+    detect_message_language,
+    language_switch_message,
     no_problem_message,
     off_topic_message,
     resolve_reply_style,
@@ -150,26 +152,31 @@ def process_tutor_message(
     history = _history_from_db(prior[:-1])
 
     reply_style, pref_update = resolve_reply_style(text, reply_style_pref)
-    routing = classify_message(text, history)
-    intent = routing["intent"]
     last_solved: dict | None = None
-    reply = ""
-
-    if intent == "off_topic":
-        reply = off_topic_message(reply_style)
-    elif intent == "discuss":
-        reply = chat_with_history(text, history, reply_style)
+    message_language = detect_message_language(text)
+    if message_language and message_language != reply_style:
+        intent = "language_switch"
+        reply = language_switch_message(reply_style)
     else:
-        problem, known_answer = _resolve_problem(text, thread, history, routing)
+        routing = classify_message(text, history)
+        intent = routing["intent"]
+        reply = ""
 
-        if not problem:
-            reply = chat_with_history(text, history, reply_style) or no_problem_message(
-                reply_style
-            )
-        elif intent == "explain":
-            reply, last_solved = _run_explain(problem, known_answer, reply_style)
+        if intent == "off_topic":
+            reply = off_topic_message(reply_style)
+        elif intent == "discuss":
+            reply = chat_with_history(text, history, reply_style)
         else:
-            reply, last_solved = _run_solve(db, user_id, problem, reply_style)
+            problem, known_answer = _resolve_problem(text, thread, history, routing)
+
+            if not problem:
+                reply = chat_with_history(text, history, reply_style) or no_problem_message(
+                    reply_style
+                )
+            elif intent == "explain":
+                reply, last_solved = _run_explain(problem, known_answer, reply_style)
+            else:
+                reply, last_solved = _run_solve(db, user_id, problem, reply_style)
 
     if last_solved:
         thread.last_solved_question = last_solved["question"]

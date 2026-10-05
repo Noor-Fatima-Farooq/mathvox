@@ -38,6 +38,7 @@ import {
   getReplyStylePreference,
   setReplyStylePreference,
   resolveReplyStyleForMessage,
+  getLanguageSwitchMessage,
   applyPreferenceUpdate,
   formatSolveForStyle,
   REPLY_STYLE_EVENT,
@@ -290,6 +291,9 @@ const Chat = ({ isDark = false, setIsDark }) => {
       }
       return data.reply;
     }
+
+    const languageSwitch = getLanguageSwitchMessage(text, style);
+    if (languageSwitch) return languageSwitch;
 
     if (wantsExplain(text)) {
       const ctx = resolveMathContext(text);

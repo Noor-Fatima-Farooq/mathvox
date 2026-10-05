@@ -8,7 +8,6 @@ from datetime import date, timedelta
 from sqlalchemy.orm import Session
 
 from app.models.progress import Progress
-from app.services.skill_profile import record_practice_from_solve
 
 MATH_SIGNAL = re.compile(
     r"(\d\s*[+\-*/^=]|[+\-*/^=]\s*\d|=\s*\d|\d+\s*[xX]\s*\d|sqrt|sin|cos|tan|\^)",
@@ -74,7 +73,6 @@ def _apply_progress(prog: Progress, problems_count: int, points: int) -> None:
 def _record_one(db: Session, user_id: int, question: str, answer: str) -> None:
     if not is_recordable_math(question, answer):
         return
-    record_practice_from_solve(db, user_id, question, success=True)
     prog = _get_or_create_progress(db, user_id)
     _apply_progress(prog, 1, POINTS_SINGLE)
 
@@ -96,7 +94,6 @@ def record_solve_result(
         for row in solved_rows:
             q, a = row.get("question", ""), row.get("answer", "")
             if is_recordable_math(q, a):
-                record_practice_from_solve(db, user_id, q, success=True)
                 n += 1
         if n:
             points = min(POINTS_WORKSHEET_CAP, n * POINTS_PER_WORKSHEET_PROBLEM)
